@@ -1,0 +1,19 @@
+// Check if Telegram response is approved
+const approved = $json["data"]?.approved === true;
+
+// Get the post content from Code4 node
+const postContent = $('Code4').first().json.postContent;
+
+// If approved, return the full input text
+if (approved) {
+  return [
+    {
+      json: {
+        text: postContent
+      }
+    }
+  ];
+}
+
+// If not approved, return nothing
+return [];

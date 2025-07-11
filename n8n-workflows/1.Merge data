@@ -1,0 +1,5 @@
+return [
+  { json: { url: "https://www.theblock.co/rss.xml" } },
+  { json: { url: "https://cryptoslate.com/feed/" } },
+  { json: { url: "https://cointelegraph.com/rss" } },
+];

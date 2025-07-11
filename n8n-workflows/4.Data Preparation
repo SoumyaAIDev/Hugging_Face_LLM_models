@@ -1,0 +1,37 @@
+function stripHTML(html) {
+  return typeof html === "string"
+    ? html.replace(/<[^>]+>/g, '').trim()
+    : "";
+}
+
+const seen = new Set();
+
+return $input.all()
+  .map(item => {
+    const content =
+      item.json["content:encoded"] ||
+      item.json.content ||
+      item.json.description ||
+      "";
+
+    const title = (item.json.title || "Untitled").trim();
+    const link = item.json.link?.trim() || "#";
+    const pubDate = item.json.pubDate || null;
+    const categories = item.json.categories || ["General"];
+
+    return {
+      json: {
+        title,
+        content,   // Raw HTML or fallback text
+        link,
+        pubDate,
+        categories
+      }
+    };
+  })
+  .filter(item => {
+    const key = item.json.title + item.json.link;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });

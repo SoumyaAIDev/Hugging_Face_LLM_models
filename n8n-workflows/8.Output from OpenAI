@@ -1,0 +1,13 @@
+const summaryText = $json.output?.text || '';
+
+// Safely access the title from the previous node "Code9"
+const title = $('Code9').first().json.title || 'Untitled';
+
+return [
+  {
+    json: {
+      title,
+      content: summaryText,
+    },
+  },
+];

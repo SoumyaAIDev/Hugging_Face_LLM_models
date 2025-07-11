@@ -1,0 +1,11 @@
+return [
+  {
+    json: {
+      title: $('Code8').first().json.title,
+      content: $('Code8').first().json.content,
+      link: $('Code8').first().json.link,
+      pubDate: $('Code8').first().json.pubDate,
+      categories: $('Code8').first().json.categories,
+    }
+  }
+];
