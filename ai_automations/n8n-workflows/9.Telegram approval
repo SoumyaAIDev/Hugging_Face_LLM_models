@@ -1,0 +1,18 @@
+// Extract the postContent from input item
+const fullPost = $input.first()?.json?.postContent || "";
+
+// Define word limit
+const maxWords = 100;
+
+// Trim to first 100 words
+const words = fullPost.split(/\s+/).slice(0, maxWords);
+const trimmedPost = words.join(" ") + (words.length === maxWords ? "..." : "");
+
+// Return the final JSON
+return [
+  {
+    json: {
+      postContent: trimmedPost
+    }
+  }
+];

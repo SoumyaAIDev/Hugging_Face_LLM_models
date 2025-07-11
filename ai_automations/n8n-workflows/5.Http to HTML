@@ -1,0 +1,15 @@
+const html = $json['data'];
+
+// Extract content inside <article>...</article>
+const match = html.match(/<article[^>]*>([\s\S]*?)<\/article>/i);
+
+// Remove all HTML tags and trim whitespace
+const content = match ? match[1].replace(/<[^>]*>/g, '').trim() : 'No <article> tag found';
+
+return [
+  {
+    json: {
+      content, // Only return extracted plain text
+    },
+  },
+];

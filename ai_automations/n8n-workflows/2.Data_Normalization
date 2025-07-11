@@ -1,0 +1,30 @@
+function stripHTML(html) {
+  return typeof html === "string"
+    ? html.replace(/<[^>]*>/g, '').replace(/[#@$]/g, '').trim()
+    : "";
+}
+
+return $input.all().map(item => {
+  const rawContent =
+    item.json.content ||
+    item.json["content:encoded"] ||
+    item.json.contentSnippet ||
+    "No content available";
+
+  const cleanedContent = stripHTML(rawContent);
+  const cleanedTitle = (item.json.title || "").replace(/[#@$]/g, '').trim();
+  const cleanedLink = (item.json.link || "").trim();
+  const cleanedCategories = Array.isArray(item.json.categories)
+    ? item.json.categories.map(cat => cat.replace(/[#@$]/g, '').trim())
+    : ["General"];
+
+  return {
+    json: {
+      title: cleanedTitle,
+      content: cleanedContent,
+      link: cleanedLink,
+      pubDate: item.json.pubDate || new Date().toISOString(),
+      categories: cleanedCategories
+    }
+  };
+});

@@ -1,0 +1,73 @@
+// Helper to trim to N words
+function trimToWords(text, maxWords) {
+  return text.split(/\s+/).slice(0, maxWords).join(' ').trim();
+}
+
+// Smart trim with ellipsis if long
+function smartSummary(text, maxWords, threshold) {
+  const words = text.trim().split(/\s+/);
+  if (words.length < threshold) {
+    const sentenceEnd = text.indexOf('.') !== -1 ? text.indexOf('.') + 1 : text.length;
+    return text.slice(0, sentenceEnd).trim();
+  } else {
+    return trimToWords(text, maxWords) + '...';
+  }
+}
+
+// Access input from previous node
+const rawTitleInput = $json.title || "";
+const rawContent = $json.content || "";
+
+// Extract title from first sentence (max 30 words)
+function extractTitle(text) {
+  const match = text.match(/^(.+?)[\.\n]/);
+  const rawTitle = match ? match[1].trim() : text;
+  return trimToWords(rawTitle, 30);
+}
+
+// Static key takeaways
+const keyTakeaways = [
+  "Inflation isn’t natural – it’s engineered.",
+  "Productivity should cause deflation.",
+  "Bitcoin is a hedge and neutral settlement layer."
+];
+
+// Format takeaways with emojis
+function formatTakeaways(takeaways) {
+  return [
+    `📘 ${takeaways[0]}`,
+    `🌱 ${takeaways[1]}`,
+    `💡 ${takeaways[2]}`
+  ].join('\n');
+}
+
+// Apply transformations
+const title = extractTitle(rawTitleInput);
+const summary = smartSummary(rawContent, 30, 60); // appends ... if > 60
+const takeawaysFormatted = formatTakeaways(keyTakeaways);
+
+// Construct LinkedIn post
+const linkedinPost = `
+🔥 ${title}
+
+📌 Here’s the breakdown from the latest development in the crypto world:
+
+1️⃣ ${summary}
+
+🧠 Key Takeaways:
+${takeawaysFormatted}
+
+⚡ Stay tuned. The crypto space is evolving fast. Don’t blink.
+
+#Crypto #Web3 #Blockchain #Innovation #DigitalAssets #Compliance #CryptoNews
+`.trim();
+
+// Output
+return {
+  json: {
+    title,
+    summary,
+    keyTakeaways,
+    postContent: linkedinPost
+  }
+};
